@@ -14,13 +14,13 @@ class App():
     outputtype = args.outputtype
     allStatements = []
 
-    bank_dict = {
-        1: 'Banco do Brasil S.A.',
-        33: 'Banco Santander (Brasil) S.A.',
-        104: 'Caixa Econômica Federal',
-        237: 'Banco Bradesco S.A.',
-        341: 'Banco Itaú S.A.'
-    }
+    # bank_dict = {
+    #     1: 'Banco do Brasil S.A.',
+    #     33: 'Banco Santander (Brasil) S.A.',
+    #     104: 'Caixa Econômica Federal',
+    #     237: 'Banco Bradesco S.A.',
+    #     341: 'Banco Itaú S.A.'
+    # }
 
     def write_file(statement, out_file):
 
@@ -34,7 +34,7 @@ class App():
     def get_stt_from_ofx(ofx):
         balance = ofx.account.statement.balance
         account = ofx.account
-        institution = ofx.account.institution
+        # institution = ofx.account.institution
 
         statement = []
         credit_transactions = ['credit', 'dep', 'int', 'directdep']
@@ -53,7 +53,7 @@ class App():
                 debit = -transaction.amount
             elif transaction.type in other_transactions:
                 if transaction.amount < 0:
-                    debit = -transaction.amount
+                    debit = transaction.amount
                 else:
                     credit = transaction.amount
             else:
@@ -81,7 +81,7 @@ class App():
         csv.to_excel(excelWriter, index_label='ABC', index=False, float_format='%2.f', freeze_panes=(1, 0))
         excelWriter.save()
 
-    files = glob("./testfiles/*.ofx")
+    files = glob("*.ofx")
     for ofx_file in files:
         ofx = OfxParser.parse(open(ofx_file, encoding="latin-1"))
 
