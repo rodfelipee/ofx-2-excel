@@ -3,6 +3,7 @@ from csv import DictWriter
 from glob import glob
 import pandas as pd
 import argparse
+import os
 
 DATEFORMAT = "%m/%d/%Y"
 
@@ -24,7 +25,7 @@ class App():
 
     def write_file(statement, out_file):
 
-        with open(out_file, 'w', newline='') as f:
+        with open(out_file, 'w', newline='', encoding='latin-1') as f:
             fields = ['DATA', 'ID', 'TIPO', 'DESCRIÇÃO', 'VALOR', 'DEBITO', 'CREDITO', 'SALDO', 'CONTA', 'BANKID']
             wr = DictWriter(f, fieldnames=fields, delimiter=',', dialect='excel')
             wr.writeheader()
@@ -50,7 +51,7 @@ class App():
             if transaction.type in credit_transactions:
                 credit = transaction.amount
             elif transaction.type in debit_transactions:
-                debit = -transaction.amount
+                debit = transaction.amount
             elif transaction.type in other_transactions:
                 if transaction.amount < 0:
                     debit = transaction.amount
@@ -80,8 +81,9 @@ class App():
         excelWriter = pd.ExcelWriter('ofx-resume.xlsx')
         csv.to_excel(excelWriter, index_label='ABC', index=False, float_format='%2.f', freeze_panes=(1, 0))
         excelWriter.save()
+        os.remove('./ofx-transactions.csv')
 
-    files = glob("*.ofx")
+    files = glob("./testfiles/*.ofx")
     for ofx_file in files:
         ofx = OfxParser.parse(open(ofx_file, encoding="latin-1"))
 
