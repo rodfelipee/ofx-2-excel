@@ -15,14 +15,6 @@ class App():
     outputtype = args.outputtype
     allStatements = []
 
-    # bank_dict = {
-    #     1: 'Banco do Brasil S.A.',
-    #     33: 'Banco Santander (Brasil) S.A.',
-    #     104: 'Caixa Econômica Federal',
-    #     237: 'Banco Bradesco S.A.',
-    #     341: 'Banco Itaú S.A.'
-    # }
-
     def write_file(statement, out_file):
 
         with open(out_file, 'w', newline='', encoding='latin-1') as f:
